@@ -65,3 +65,13 @@ export const sellerKeys = Object.keys(sellers);
 export function dbIdentifier(seller) {
   return `${seller}_job`;
 }
+
+import db from '../config/config';
+
+export function getSellerModel(seller) {
+  return db.model(dbIdentifier(seller));
+}
+
+export function getPriceHistoryModel(seller) {
+  return db.model(`${seller}_product_price_history`);
+}

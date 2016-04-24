@@ -1,67 +1,6 @@
 import validUrl from 'valid-url';
 import urlParse from 'url-parse';
-
-const FLIPKART = 'flipkart';
-const AMAZON_IN = 'amazonIn';
-const SNAPDEAL = 'snapdeal';
-const HEALTHKART = 'healthkart';
-const ZIVAME = 'zivame';
-const JABONG = 'jabong';
-const FABFURNISH = 'fanfurnish';
-const INFIBEAM = 'infibeam';
-
-export const sellers = {
-  [FLIPKART]: {
-    label: 'Flipkart',
-    hostname: 'flipkart.com',
-    affiliateParams: { affid: 'aakashlpin' },
-    deeplink: true,
-    props: {
-      userAgent: true,
-    },
-  },
-  [AMAZON_IN]: {
-    label: 'Amazon India',
-    hostname: 'amazon.in',
-    affiliateParams: { tag: 'cheapass0a-21' },
-    deeplink: true,
-    props: {
-      userAgent: false,
-    },
-  },
-  [SNAPDEAL]: {
-    label: 'Snapdeal',
-    hostname: 'snapdeal.com',
-    affiliateParams: { aff_id: '12129', utm_source: 'aff_prog', utm_campaign: 'afts', offer_id: '17'},
-    deeplink: true,
-    props: {
-      userAgent: true,
-    },
-  },
-  [HEALTHKART]: {
-    label: 'HealthKart',
-    hostname: 'healthkart.com',
-  },
-  [ZIVAME]: {
-    label: 'Zivame',
-    hostname: 'zivame.com',
-  },
-  [JABONG]: {
-    label: 'Jabong',
-    hostname: 'jabong.com',
-    props: {
-      userAgent: true,
-    },
-  },
-  [FABFURNISH]: {
-    label: 'FabFurnish',
-    hostname: 'fabfurnish.com',
-  },
-  [INFIBEAM]: {
-    label: 'Infibeam',
-    hostname: 'infibeam.com',
-  },
-};
+import {sellers} from '../config/config';
 
 const hostnames = Object.keys(sellers).map(seller => sellers[seller].hostname);
 const hostnameToSellerIdMap = Object.keys(sellers).reduce((map, seller) => {

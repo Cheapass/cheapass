@@ -1,26 +1,30 @@
 import 'babel-core/polyfill';
+import fs from 'fs';
 import express from 'express';
 import bodyParser from 'body-parser';
-// import multer from 'multer';
-import routes from './router/routes';
 const server = global.server = express();
-// const upload = multer();
 const port = process.env.PORT || 5500;
 server.set('port', port);
 
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 
-const dbPath = 'mongodb://localhost/streetsmart-development';
+import routes from './router/routes';
+import tasks from './background/background';
+import './background/dbConnection';
 
-import mongoose from 'mongoose';
-const db = mongoose.createConnection(dbPath);
+const modelsPath = __dirname + '/models/';
 
-db.on('error', () => {
-  throw new Error(`unable to connect to database at ${dbPath}`);
-});
+fs.readdirSync(modelsPath)
+  .filter(file => file.indexOf('.js') >= 0)
+  .forEach(file => {
+    require(`./models/${file}`);
+  });
+
 
 routes(server);
+
+tasks.run();
 
 //
 // Launch the server

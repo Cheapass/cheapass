@@ -1,4 +1,4 @@
-import { isUrl, isScrapable, sellers as config } from '../middlewares/index';
+import { isUrl, isScrapable, sellers as CONFIG } from '../middlewares/index';
 import * as sellers from '../sellers/index';
 
 const routes = (server) => {
@@ -7,7 +7,7 @@ const routes = (server) => {
     const { body: { url }, sellerId } = req;
     const sellerScraper = sellers[sellerId];
 
-    const scrapedInfo = await sellerScraper.scrape(url, config[sellerId].scrape || {});
+    const scrapedInfo = await sellerScraper.scrape(url, CONFIG[sellerId].props || {});
 
     if (!scrapedInfo.isValid) {
       res.status(500).json({status: 'Unable to process'});

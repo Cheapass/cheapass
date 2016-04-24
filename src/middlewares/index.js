@@ -16,7 +16,7 @@ export const sellers = {
     hostname: 'flipkart.com',
     affiliateParams: { affid: 'aakashlpin' },
     deeplink: true,
-    scrape: {
+    props: {
       userAgent: true,
     },
   },
@@ -25,7 +25,7 @@ export const sellers = {
     hostname: 'amazon.in',
     affiliateParams: { tag: 'cheapass0a-21' },
     deeplink: true,
-    scrape: {
+    props: {
       userAgent: false,
     },
   },
@@ -34,7 +34,7 @@ export const sellers = {
     hostname: 'snapdeal.com',
     affiliateParams: { aff_id: '12129', utm_source: 'aff_prog', utm_campaign: 'afts', offer_id: '17'},
     deeplink: true,
-    scrape: {
+    props: {
       userAgent: true,
     },
   },
@@ -49,7 +49,7 @@ export const sellers = {
   [JABONG]: {
     label: 'Jabong',
     hostname: 'jabong.com',
-    scrape: {
+    props: {
       userAgent: true,
     },
   },

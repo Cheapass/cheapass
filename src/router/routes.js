@@ -7,13 +7,13 @@ const routes = (server) => {
     const { body: { url }, sellerId } = req;
     const sellerScraper = sellers[sellerId];
 
-    await sellerScraper.scrape(url, config[sellerId].scrape || {});
+    const scrapedInfo = await sellerScraper.scrape(url, config[sellerId].scrape || {});
 
-    if (sellerScraper.isValid()) {
-      return res.json(sellerScraper.getScrapedData());
+    if (!scrapedInfo.isValid) {
+      res.status(500).json({status: 'Unable to process'});
     }
 
-    res.status(500).json({status: 'Unable to process'});
+    return res.json(scrapedInfo.data);
   });
 };
 

@@ -2,27 +2,27 @@ import fetch from '../utils/fetch';
 import cheerio from 'cheerio';
 
 export default class Scrape {
-  constructor() {
-    this.scrapedData = {};
-  }
-
-  getScrapedData() {
-    return this.scrapedData;
-  }
-
   getDom(response) {
     const { body } = response;
     return cheerio.load(body);
   }
 
-  async scrape(url, options) {
-    const response = await fetch(url, options);
-    this.scrapedData = this.parser(this.getDom(response));
+  parser() {
+    throw new Error('<Scraper>#parser is not implemented!');
   }
 
-  isValid() {
+  async scrape(url, options) {
+    const response = await fetch(url, options);
+    const scrapedData = this.parser(this.getDom(response));
+    return {
+      isValid: this.isValid(scrapedData),
+      data: scrapedData,
+    };
+  }
+
+  isValid(scrapedData) {
     const expectedKeys = ['price', 'title', 'image'];
-    const matchingKeys = Object.keys(this.scrapedData).filter(scrapedKey => {
+    const matchingKeys = Object.keys(scrapedData).filter(scrapedKey => {
       return expectedKeys.includes(scrapedKey);
     });
 

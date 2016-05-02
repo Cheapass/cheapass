@@ -19,18 +19,20 @@ function _getJob(id, callback) {
 
 export function handleJobComplete(id) {
   _getJob(id, (err, job) => {
-    if (err) {
-      //
+    console.log(err, job.result);
+    if (err || !job.result) {
+      return;
     }
 
     const { type, data, data: {
       _id, email, currentPrice, seller, productURL,
-    }, result, result: { productPrice } } = job;
+    }, result, result: { price: productPrice } } = job;
 
     switch (type) {
     // same event will be emitted for all kue types
     // so handle by type
     case 'scraper': {
+      console.log(data, result);
       if (!_shouldSendAlert(data, result)) {
         return;
       }
@@ -44,6 +46,8 @@ export function handleJobComplete(id) {
         alertToPrice: productPrice,
         alertFromPrice: currentPrice,
       };
+
+      console.log('updating in db');
 
       getSellerModel(seller).update(query, updateWith, {}, () => {
         job.remove();
@@ -65,6 +69,7 @@ export function handleJobComplete(id) {
 }
 
 export function handleJobFailed(id) {
+  console.log('JOB FAILED ', id);
   _getJob(id, (err, job) => {
     if (err) {
       // logit.as('')
@@ -73,6 +78,13 @@ export function handleJobFailed(id) {
   });
 }
 
-export function handleJobError() {
+export function handleJobError(id) {
+  console.log('JOB ERROR ', id);
   // logger.log('info', 'job error event received', {id: id});
+  // _getJob(id, (err, job) => {
+  //   if (err) {
+  //     // logit.as('')
+  //   }
+  //   job.remove();
+  // });
 }

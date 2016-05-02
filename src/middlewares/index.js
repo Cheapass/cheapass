@@ -17,6 +17,17 @@ const respondInvalidRequest = ({res, status}) => {
   res.status(400).json({status});
 };
 
+export function getSellerFromUrl(url) {
+  const urlHostname = getHostnameFromUrl(url);
+  const sellerHostname = hostnames.find(hostname => {
+    return urlHostname.indexOf(hostname) !== -1;
+  });
+  if (!sellerHostname) {
+    return null;
+  }
+  return hostnameToSellerIdMap[sellerHostname];
+}
+
 export const isUrl = (req, res, next) => {
   const { url } = req.body;
 
@@ -29,13 +40,9 @@ export const isUrl = (req, res, next) => {
 
 export const isScrapable = (req, res, next) => {
   const { url } = req.body;
-  const urlHostname = getHostnameFromUrl(url);
-  const sellerHostname = hostnames.find(hostname => {
-    return urlHostname.indexOf(hostname) !== -1;
-  });
-
-  if (sellerHostname) {
-    req.sellerId = hostnameToSellerIdMap[sellerHostname];
+  const seller = getSellerFromUrl(url);
+  if (seller) {
+    req.body.seller = seller;
     return next();
   }
 

@@ -12,12 +12,19 @@ export default class Scrape {
   }
 
   async scrape(url, options) {
-    const response = await fetch(url, options);
-    const scrapedData = this.parser(this.getDom(response));
-    return {
-      isValid: this.isValid(scrapedData),
-      data: scrapedData,
-    };
+    try {
+      const response = await fetch(url, options);
+      const scrapedData = this.parser(this.getDom(response));
+      return {
+        isValid: this.isValid(scrapedData),
+        data: scrapedData,
+      };
+    } catch (error) {
+      return {
+        isValid: false,
+        data: {},
+      };
+    }
   }
 
   isValid(scrapedData) {

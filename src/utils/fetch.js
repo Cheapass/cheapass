@@ -19,3 +19,22 @@ export default async function fetch(url, options = {}) {
     });
   });
 }
+
+
+export async function fetchPost(url, options = {}) {
+  return new Promise((resolve, reject) => {
+    const Request = unirest.post(url)
+      .headers({'Content-Type': 'multipart/form-data'});
+
+    Object.keys(options).forEach(option => {
+      Request.field(option, options[option]);
+    });
+
+    Request.end((response) => {
+      if (response.ok) {
+        return resolve(response.body);
+      }
+      reject(response);
+    });
+  });
+}
